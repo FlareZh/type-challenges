@@ -23,7 +23,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-declare function PromiseAll(values: any): any
+type MyAwaited<T> = T extends Promise<infer P> ? MyAwaited<P> : T
+
+type PA<T extends any[]> = {
+  [P in keyof T]: MyAwaited<T[P]>
+}
+
+declare function PromiseAll<T extends any[]>(values: [...T]): Promise<PA<T>>
+
+type A = Awaited<number | Promise<number>>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

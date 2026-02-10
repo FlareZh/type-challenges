@@ -16,15 +16,39 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Permutation<T> = any
+type Permutation<T, X = T> = [T] extends [never]
+  ? []
+  : X extends any
+    ? [X, ...Permutation<Exclude<T, X>>]
+    : []
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
 type cases = [
   Expect<Equal<Permutation<'A'>, ['A']>>,
-  Expect<Equal<Permutation<'A' | 'B' | 'C'>, ['A', 'B', 'C'] | ['A', 'C', 'B'] | ['B', 'A', 'C'] | ['B', 'C', 'A'] | ['C', 'A', 'B'] | ['C', 'B', 'A']>>,
-  Expect<Equal<Permutation<'B' | 'A' | 'C'>, ['A', 'B', 'C'] | ['A', 'C', 'B'] | ['B', 'A', 'C'] | ['B', 'C', 'A'] | ['C', 'A', 'B'] | ['C', 'B', 'A']>>,
+  Expect<
+    Equal<
+      Permutation<'A' | 'B' | 'C'>,
+      | ['A', 'B', 'C']
+      | ['A', 'C', 'B']
+      | ['B', 'A', 'C']
+      | ['B', 'C', 'A']
+      | ['C', 'A', 'B']
+      | ['C', 'B', 'A']
+    >
+  >,
+  Expect<
+    Equal<
+      Permutation<'B' | 'A' | 'C'>,
+      | ['A', 'B', 'C']
+      | ['A', 'C', 'B']
+      | ['B', 'A', 'C']
+      | ['B', 'C', 'A']
+      | ['C', 'A', 'B']
+      | ['C', 'B', 'A']
+    >
+  >,
   Expect<Equal<Permutation<boolean>, [false, true] | [true, false]>>,
   Expect<Equal<Permutation<never>, []>>,
 ]

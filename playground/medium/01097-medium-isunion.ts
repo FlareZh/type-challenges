@@ -20,7 +20,7 @@
 
 /* _____________ 你的代码 _____________ */
 
-type IsUnion<T> = any
+type IsUnion<T> = (T extends T ? (a: T) => T : never) extends (a: T) => T ? false : true
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

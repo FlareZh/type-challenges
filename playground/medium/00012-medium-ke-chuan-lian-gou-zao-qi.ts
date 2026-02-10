@@ -39,10 +39,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Chainable = {
-  option(key: string, value: any): any
-  get(): any
+type Chainable<T = {}> = {
+  option<K extends string, V>(
+    key: K extends keyof T ? never : K,
+    value: V,
+  ): Chainable<Omit<T, K> & Record<K, V>>
+  get(): T
 }
+
+type A = string extends never ? true : false
 
 /* _____________ 测试用例 _____________ */
 import type { Alike, Expect } from '@type-challenges/utils'
